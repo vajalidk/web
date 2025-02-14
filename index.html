@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Honda Automotriz</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <header>
+        <div class="logo">
+            <h1>HONDA</h1>
+            <p>NO DEJEMOS DE SOÑAR</p>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="catalogo.html">Autos Honda</a></li>
+                <li><a href="admin.html">Administración</a></li>
+                <li><a href="#">NA</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="video-banner">
+        <video autoplay muted loop>
+            <source src="src/HONDA. NO DEJEMOS DE SOÑAR.mp4" type="video/mp4">
+            Tu navegador no soporta videos.
+        </video>
+    </section>
+
+    <section class="feature-links">
+        <div class="feature">
+            <img src="src/accord24.png" alt="Accord 2024" onclick="cotizarCarro(1)">
+            <div class="feature-text">Accord 2024</div>
+        </div>
+        <div class="feature">
+            <img src="src/accord-hibrido.png" alt="Accord Híbrido" onclick="cotizarCarro(2)">
+            <div class="feature-text">Accord Híbrido</div>
+        </div>
+        <div class="feature">
+            <img src="src/brv.png" alt="BR-V" onclick="cotizarCarro(3)">
+            <div class="feature-text">BR-V</div>
+        </div>
+        <div class="feature">
+            <img src="src/city.png" alt="City" onclick="cotizarCarro(4)">
+            <div class="feature-text">City</div>
+        </div>
+    </section>    
+      
+
+    <div class="dark-section">
+        <h2>Modelos Destacados</h2>
+    
+        <section class="dark-carousel">
+            <div class="carousel-container">
+                <div class="slide">
+                    <img src="src/crv-hibrido-tm.png" alt="CR-V Híbrido TM">
+                    <div class="text-overlay">Nuevo CR-V Híbrido</div>
+                </div>
+                <div class="slide">
+                    <img src="src/odyssey.png" alt="Odyssey">
+                    <div class="text-overlay">Minivan Odyssey</div>
+                </div>
+                <div class="slide">
+                    <img src="src/pilot-2023.png" alt="Pilot 2023">
+                    <div class="text-overlay">Honda Pilot 2023</div>
+                </div>
+                <div class="slide">
+                    <img src="src/hrv.png" alt="HR-V">
+                    <div class="text-overlay">Honda HR-V</div>
+                </div>
+            </div>
+    
+            <!-- Botones de navegación -->
+            <button class="prev" onclick="moveSlide(-1)">&#10094;</button>
+            <button class="next" onclick="moveSlide(1)">&#10095;</button>
+    
+            <!-- Indicadores -->
+            <div class="carousel-indicators">
+                <span onclick="currentSlide(0)" class="active"></span>
+                <span onclick="currentSlide(1)"></span>
+                <span onclick="currentSlide(2)"></span>
+                <span onclick="currentSlide(3)"></span>
+            </div>
+        </section>
+    </div>
+    
+    <!-- Cargar scripts después de que el DOM esté listo -->
+    <script src="script.js"></script>
+    <script src="catalogo.js"></script>
+
+</body>
+</html>

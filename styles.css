@@ -1,0 +1,721 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+}
+
+header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #222;
+    color: white;
+    padding: 15px 50px;
+}
+
+header .logo h1 {
+    font-size: 32px;
+    margin: 0;
+    color: red;
+}
+
+header p {
+    font-size: 16px;
+    margin: 0;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+}
+
+nav ul li {
+    display: inline;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: white;
+    font-size: 18px;
+}
+
+.video-banner video {
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+}
+
+.feature-links {
+    display: flex;
+    justify-content: space-around;
+    margin: 30px 0;
+}
+
+.feature {
+    position: relative;
+    width: 22%;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.feature img {
+    width: 100%;
+    transition: transform 0.3s ease-in-out;
+}
+
+.feature:hover img {
+    transform: scale(1.1);
+}
+
+.feature .feature-text {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 20px 0;
+    background: rgba(0, 0, 0, 0);
+    color: white;
+    font-size: 24px;
+    text-align: center;
+    font-weight: bold;
+    opacity: 0;
+    transition: all 0.3s ease-in-out;
+}
+
+.feature:hover .feature-text {
+    opacity: 1;
+    background: rgba(0, 0, 0, 0.7);
+}
+
+/* Sección del carrusel */
+.carousel {
+    position: relative;
+    max-width: 80%;
+    margin: 50px auto; /* Espaciado para dividir visualmente */
+    overflow: hidden;
+    border-radius: 10px;
+    border: 2px solid #ddd; /* Borde para dividir visualmente */
+    background-color: #f4f4f4;
+}
+
+.carousel-container {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+}
+
+.slide {
+    min-width: 100%;
+    position: relative;
+}
+
+.slide img {
+    width: 100%;
+    height: 400px; /* Ajuste uniforme del tamaño */
+    object-fit: contain; /* Asegura que la imagen se ajuste sin recortarse */
+    border-radius: 10px;
+}
+
+/* Estilo para dividir visualmente las secciones */
+.section-divider {
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(to right, #d60000, #ff4d4d);
+    margin: 50px 0;
+}
+
+/* Texto dentro del carrusel */
+.text-overlay {
+    position: absolute;
+    bottom: 10px;
+    left: 20px;
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 15px 20px;
+    font-size: 22px;
+    border-radius: 5px;
+}
+
+/* Espaciado entre secciones */
+.section {
+    padding: 50px 0;
+    text-align: center;
+}
+
+.section h2 {
+    font-size: 28px;
+    color: #333;
+}
+
+/* Sección Modelos Destacados con fondo oscuro */
+.dark-section {
+    background-color: #1a1a1a;  /* Fondo oscuro */
+    color: white;               /* Texto en blanco */
+    padding: 50px 0;
+    text-align: center;
+}
+
+.dark-section h2 {
+    font-size: 32px;
+    margin-bottom: 20px;
+    color: #ff4d4d; /* Rojo brillante para resaltar */
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+/* Asegurar que el carrusel esté bien centrado */
+.dark-carousel {
+    position: relative;
+    max-width: 80%;
+    margin: 0 auto;
+    overflow: hidden;
+    border-radius: 10px;
+    background: #333;
+    padding: 20px;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+}
+
+/* Ajustar tamaño de imágenes */
+.dark-carousel .slide img {
+    width: 100%;
+    height: 400px;
+    object-fit: contain;
+    border-radius: 10px;
+}
+
+/* Ajuste correcto de los botones del carrusel */
+button.prev, button.next {
+    position: absolute;
+    top: 50%;  /* Asegura que estén centrados verticalmente */
+    transform: translateY(-50%);
+    background-color: rgba(255, 255, 255, 0.2);
+    color: white;
+    border: none;
+    padding: 15px;
+    cursor: pointer;
+    font-size: 24px;
+    border-radius: 50%;
+    z-index: 10; /* Asegura que estén sobre la imagen */
+}
+
+/* Estilos de los botones de navegación sin fondo */
+button.prev, button.next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: transparent; /* Quitar el fondo */
+    color: white; /* Color blanco para la flecha */
+    border: none;
+    padding: 15px;
+    cursor: pointer;
+    font-size: 36px; /* Tamaño de la flecha más visible */
+    z-index: 10; /* Asegurar que esté sobre la imagen */
+    transition: color 0.3s ease-in-out;
+}
+
+/* Ubicación de los botones */
+button.prev {
+    left: 10px;
+}
+
+button.next {
+    right: 10px;
+}
+
+/* Efecto hover para resaltar la flecha */
+button.prev:hover, button.next:hover {
+    color: #ff4d4d; /* Cambia la flecha a color rojo al pasar el mouse */
+}
+
+/* Indicadores del carrusel */
+.carousel-indicators {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.carousel-indicators span {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    margin: 0 5px;
+    background-color: #555;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.carousel-indicators .active {
+    background-color: #ff4d4d;
+}
+
+/* catalogo */
+/* Estilo de sección del catálogo */
+.catalogo {
+    padding: 30px;
+    text-align: center;
+}
+
+.catalogo-title {
+    font-size: 32px;
+    color: #333;
+    margin-bottom: 30px;
+}
+
+/* Diseño en cuadrícula para las tarjetas */
+.catalogo-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    padding: 0 20px;
+}
+
+/* Estilo de las tarjetas */
+.card {
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    padding: 20px;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.card img {
+    max-width: 100%;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+.card h3 {
+    font-size: 22px;
+    color: #333;
+}
+
+.card p {
+    font-size: 18px;
+    color: #555;
+}
+
+/* Estilo de los botones */
+.card button {
+    background-color: red;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.card button:hover {
+    background-color: #d60000;
+}
+
+/* Efecto al pasar el ratón sobre las tarjetas */
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+/* Seccion de compras */
+/* Contenedor principal de la compra */
+.compra-container {
+    width: 60%;
+    margin: 40px auto;
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
+/* Información del auto seleccionado */
+.car-info {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 25px;
+    padding: 15px;
+    background: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.car-img {
+    width: 280px;
+    border-radius: 10px;
+}
+
+.car-details h2 {
+    font-size: 26px;
+    margin: 5px 0;
+    color: #333;
+}
+
+.price {
+    font-size: 24px;
+    color: #d60000;
+    font-weight: bold;
+}
+
+/* Formulario de datos del comprador */
+/* Contenedor principal de la compra */
+.compra-container {
+    width: 55%;
+    margin: 50px auto;
+    background: #ffffff;
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+/* Información del auto */
+.car-info {
+    background: #f9f9f9;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    text-align: left;
+}
+
+.car-img {
+    width: 250px;
+    border-radius: 10px;
+}
+
+.car-details h2 {
+    font-size: 26px;
+    margin: 0;
+    font-weight: bold;
+    color: #222;
+}
+
+.price {
+    font-size: 24px;
+    color: #d60000;
+    font-weight: bold;
+}
+
+/* Formulario de datos del comprador */
+/* Contenedor principal de la compra */
+.compra-container {
+    width: 55%;
+    margin: 50px auto;
+    background: #ffffff;
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+/* Información del auto */
+.car-info {
+    background: #f9f9f9;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    text-align: left;
+}
+
+.car-img {
+    width: 250px;
+    border-radius: 10px;
+    max-width: 100%;
+    height: auto;
+}
+
+.car-details h2 {
+    font-size: 26px;
+    margin: 0;
+    font-weight: bold;
+    color: #222;
+}
+
+.price {
+    font-size: 24px;
+    color: #d60000;
+    font-weight: bold;
+}
+
+/* Formulario de datos del comprador */
+.form-section {
+    background: #f9f9f9;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+}
+
+.form-section h3 {
+    font-size: 22px;
+    font-weight: bold;
+    color: #222;
+    margin-bottom: 10px;
+}
+
+.form-section input {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: border 0.3s;
+}
+
+.form-section input:focus {
+    border: 2px solid #d60000;
+    outline: none;
+}
+
+/* Opciones de pago */
+.payment-options {
+    background: #f9f9f9;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+}
+
+.payment-options h3 {
+    font-size: 22px;
+    font-weight: bold;
+    color: #222;
+    margin-bottom: 10px;
+}
+
+.payment-options p {
+    font-size: 18px;
+}
+
+/* Estilo mejorado del slider */
+input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 10px;
+    border-radius: 5px;
+    background: linear-gradient(to right, #ff4d4d, #d60000);
+    outline: none;
+    opacity: 0.9;
+    transition: opacity 0.2s;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    background: white;
+    border: 3px solid red;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+input[type="range"]::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    background: white;
+    border: 3px solid red;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+input[type="range"]:hover {
+    opacity: 1;
+}
+
+/* Botón de compra */
+.buy-btn {
+    width: 100%;
+    background: linear-gradient(to right, #d60000, #ff4d4d);
+    color: white;
+    padding: 18px;
+    font-size: 22px;
+    font-weight: bold;
+    border-radius: 8px;
+    transition: 0.3s;
+    border: none;
+    cursor: pointer;
+    text-transform: uppercase;
+}
+
+.buy-btn:hover {
+    background: linear-gradient(to right, #ff4d4d, #d60000);
+    box-shadow: 0 4px 10px rgba(214, 0, 0, 0.5);
+    transform: scale(1.05);
+}
+
+/* 🟢 RESPONSIVIDAD PARA TELÉFONOS Y TABLETAS */
+@media screen and (max-width: 1024px) {
+    .compra-container {
+        width: 80%;
+        padding: 30px;
+    }
+
+    .car-info {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .car-img {
+        width: 200px;
+    }
+
+    .form-section input {
+        width: 100%;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .compra-container {
+        width: 90%;
+        padding: 20px;
+    }
+
+    .car-img {
+        width: 180px;
+    }
+
+    .form-section,
+    .payment-options {
+        padding: 15px;
+    }
+
+    .form-section input {
+        font-size: 14px;
+        padding: 10px;
+    }
+
+    .buy-btn {
+        font-size: 18px;
+        padding: 15px;
+    }
+}
+
+  /* Estilos generales */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+/* Estilos para encabezado */
+header {
+    background-color: black;
+    color: white;
+    padding: 15px;
+    text-align: center;
+}
+
+h1 {
+    color: #d60000;
+    text-align: center;
+}
+
+/* Contenedor de login */
+.login-container {
+    width: 300px;
+    background: white;
+    padding: 20px;
+    margin: 80px auto;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    text-align: center;
+}
+
+.login-container input {
+    width: 90%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.login-container button {
+    width: 100%;
+    padding: 10px;
+    background: #d60000;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 5px;
+}
+
+.login-container button:hover {
+    background: #b50000;
+}
+
+/* Tablas de datos */
+table {
+    width: 90%;
+    margin: 20px auto;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+table th, table td {
+    padding: 12px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+}
+
+table th {
+    background: black;
+    color: white;
+}
+
+/* Contenedor de tablas */
+.table-container {
+    width: 95%;
+    margin: auto;
+    padding: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    background-color: white;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+}
+
+th {
+    background-color: black;
+    color: white;
+    font-weight: bold;
+}
+
+.charts-container {
+    width: 80%;
+    margin: 40px auto;
+    text-align: center;
+}
+
+canvas {
+    max-width: 100%;
+    height: 300px;
+    margin-bottom: 40px;
+}

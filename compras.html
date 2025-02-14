@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Realiza tu Compra</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <h1>HONDA</h1>
+            <p>No dejemos de soñar</p>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="catalogo.html">Autos Honda</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="compra-container">
+        <h1 class="title">REALIZA TU COMPRA</h1>
+
+        <div class="car-info">
+            <img id="car-image" src="" alt="Auto seleccionado" class="car-img">
+            <div class="car-details">
+                <h2 id="car-name"></h2>
+                <p class="price" id="car-price"></p>
+            </div>
+        </div>
+
+        <div class="form-section">
+            <h3>Datos del Comprador</h3>
+            <form id="compra-form">
+                <input type="text" id="nombre" placeholder="Nombre" required>
+                <input type="text" id="apellido_paterno" placeholder="Apellido Paterno" required>
+                <input type="text" id="apellido_materno" placeholder="Apellido Materno" required>
+                <input type="email" id="email" placeholder="Correo Electrónico" required>
+                <input type="text" id="telefono" placeholder="Teléfono" required>
+                <input type="text" id="estado" placeholder="Estado" required>
+                <input type="text" id="ciudad" placeholder="Ciudad" required>
+            </form>
+        </div>
+
+        <div class="payment-options">
+            <h3>Opciones de Pago</h3>
+            <label for="enganche">Elige tu enganche (%)</label>
+            <input type="range" id="enganche" min="10" max="80" step="10" value="20" onchange="updateEnganche()">
+            <p>Enganche: <span id="enganche-value">$0.00</span></p>
+
+            <label for="plazo">Elige tu plazo (meses)</label>
+            <input type="range" id="plazo" min="12" max="72" step="12" value="12" onchange="updatePlazo()">
+            <p>Plazo: <span id="plazo-value">12 meses</span></p>
+
+            <h3>Pago Mensual Estimado</h3>
+            <p class="monthly-payment">Pago mensual estimado: <span id="pago-mensual">$0.00</span></p>
+        </div>
+
+        <button class="buy-btn" onclick="realizarCompra()">Realizar Compra</button>
+    </div>
+
+    <script>
+        let carPrice = 0;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const carId = urlParams.get('carId');
+
+            const carData = {
+                1: { name: 'Accord 2024', price: 350000, image: 'src/accord24.png' },
+                2: { name: 'Civic 2024', price: 580000, image: 'src/city.png' },
+                3: { name: 'Accord Híbrido', price: 915900, image: 'src/accord-hibrido.png' },
+                4: { name: 'BR-V', price: 488900, image: 'src/brv.png' },
+                5: { name: 'CR-V Híbrido', price: 947900, image: 'src/crv-hibrido-tm.png' },
+                6: { name: 'HR-V', price: 592900, image: 'src/hrv.png' },
+                7: { name: 'Odyssey', price: 1182900, image: 'src/odyssey.png' },
+                8: { name: 'Pilot 2023', price: 1200900, image: 'src/pilot-2023.png' },
+            };
+
+            if (carId && carData[carId]) {
+                const car = carData[carId];
+                document.getElementById('car-name').textContent = car.name;
+                document.getElementById('car-price').textContent = `$${car.price.toLocaleString()}`;
+                document.getElementById('car-image').src = car.image;
+
+                carPrice = car.price; // Asignar precio del auto
+                updateEnganche();
+                updatePlazo();
+            } else {
+                alert('Carro no encontrado');
+                window.location.href = 'catalogo.html';
+            }
+        });
+
+        function updateEnganche() {
+            const engancheInput = document.getElementById('enganche');
+            const engancheValue = document.getElementById('enganche-value');
+            const engancheAmount = (carPrice * engancheInput.value) / 100;
+            engancheValue.textContent = `$${engancheAmount.toLocaleString()}`;
+            updatePagoMensual();
+        }
+
+        function updatePlazo() {
+            const plazoInput = document.getElementById('plazo');
+            const plazoValue = document.getElementById('plazo-value');
+            plazoValue.textContent = `${plazoInput.value} meses`;
+            updatePagoMensual();
+        }
+
+        function updatePagoMensual() {
+            const enganche = (carPrice * document.getElementById('enganche').value) / 100;
+            const saldoFinanciar = carPrice - enganche;
+            const plazo = document.getElementById('plazo').value;
+            const pagoMensual = saldoFinanciar / plazo;
+            document.getElementById('pago-mensual').textContent = `$${pagoMensual.toLocaleString()}`;
+        }
+
+        function realizarCompra() {
+            const fechaVenta = new Date().toISOString().split('T')[0];
+
+            const formData = {
+                nombre: document.getElementById('nombre').value,
+                apellido_paterno: document.getElementById('apellido_paterno').value,
+                apellido_materno: document.getElementById('apellido_materno').value,
+                email: document.getElementById('email').value,
+                telefono: document.getElementById('telefono').value,
+                estado: document.getElementById('estado').value,
+                ciudad: document.getElementById('ciudad').value,
+                precio_final: carPrice, // Asegurar que se envía el precio final
+                enganche: parseFloat(document.getElementById('enganche').value),
+                plazo: parseInt(document.getElementById('plazo').value),
+                pago_mensual: parseFloat(document.getElementById('pago-mensual').textContent.replace('$', '').replace(',', '')),
+                id_auto: new URLSearchParams(window.location.search).get('carId'),
+                fecha_venta: fechaVenta
+            };
+
+            fetch('http://localhost:5000/realizar-compra', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData)
+            })
+            .then(response => response.json())
+            .then(data => alert(data.message))
+            .catch(error => alert('Error al procesar la compra'));
+        }
+    </script>
+</body>
+</html>

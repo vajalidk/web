@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo de Autos Honda</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <h1>HONDA</h1>
+            <p>No dejemos de soñar</p>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="catalogo.html">Autos Honda</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="catalogo">
+        <h2 class="catalogo-title">Catálogo de Autos Honda</h2>
+        <div class="catalogo-container">
+            <div class="card">
+                <img src="src/accord24.png" alt="Accord 2024">
+                <h3>Honda Accord 2024</h3>
+                <button onclick="cotizarCarro(1)">Cotizar</button>
+            </div>
+
+            <div class="card">
+                <img src="src/accord-hibrido.png" alt="Accord Híbrido">
+                <h3>Honda Accord Híbrido</h3>
+                <button onclick="cotizarCarro(2)">Cotizar</button>
+            </div>
+
+            <div class="card">
+                <img src="src/brv.png" alt="BR-V">
+                <h3>Honda BR-V</h3>
+                <button onclick="cotizarCarro(3)">Cotizar</button>
+            </div>
+
+            <div class="card">
+                <img src="src/crv-hibrido-tm.png" alt="CR-V Híbrido">
+                <h3>Honda CR-V Híbrido</h3>
+                <button onclick="cotizarCarro(4)">Cotizar</button>
+            </div>
+
+            <div class="card">
+                <img src="src/city.png" alt="City">
+                <h3>Honda City</h3>
+                <button onclick="cotizarCarro(5)">Cotizar</button>
+            </div>
+
+            <div class="card">
+                <img src="src/hrv.png" alt="HR-V">
+                <h3>Honda HR-V</h3>
+                <button onclick="cotizarCarro(6)">Cotizar</button>
+            </div>
+
+            <div class="card">
+                <img src="src/odyssey.png" alt="Odyssey">
+                <h3>Honda Odyssey</h3>
+                <button onclick="cotizarCarro(7)">Cotizar</button>
+            </div>
+
+            <div class="card">
+                <img src="src/pilot-2023.png" alt="Pilot 2023">
+                <h3>Honda Pilot 2023</h3>
+                <button onclick="cotizarCarro(8)">Cotizar</button>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        function cotizarCarro(carId) {
+            console.log(`Redirigiendo a compras con carId: ${carId}`);
+            window.location.href = `compras.html?carId=${carId}`;
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Administración</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Librería Chart.js -->
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <h1>HONDA</h1>
+            <p>Panel de Administración</p>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="catalogo.html">Autos Honda</a></li>
+                <li><a href="tablas.html">Administración</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="admin-container">
+        <h2>Lista de Clientes</h2>
+        <table id="clientes-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Apellido Paterno</th>
+                    <th>Apellido Materno</th>
+                    <th>Email</th>
+                    <th>Teléfono</th>
+                    <th>Estado</th>
+                    <th>Ciudad</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody id="tabla-clientes-body"></tbody>
+        </table>
+
+        <h2>Inventario de Autos</h2>
+        <table id="autos-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Marca</th>
+                    <th>Modelo</th>
+                    <th>Año</th>
+                    <th>Color</th>
+                    <th>Precio</th>
+                    <th>Disponibilidad</th>
+                </tr>
+            </thead>
+            <tbody id="tabla-autos-body"></tbody>
+        </table>
+
+        <h2>Compras Realizadas</h2>
+        <table id="ventas-table">
+            <thead>
+                <tr>
+                    <th>Fecha de Venta</th>
+                    <th>Cliente</th>
+                    <th>Email</th>
+                    <th>Teléfono</th>
+                    <th>Auto Comprado</th>
+                    <th>Precio Final</th>
+                    <th>Enganche</th>
+                    <th>Plazo</th>
+                    <th>Pago Mensual</th>
+                </tr>
+            </thead>
+            <tbody id="tabla-compras-body"></tbody>
+        </table>
+
+        <!-- 📊 Sección de Gráficas -->
+        <div class="charts-container">
+            <h2>📊 Distribución de Ventas por Modelo</h2>
+            <canvas id="ventasPieChart" width="400" height="300"></canvas>
+    
+            <h2>📈 Ganancias por Modelo de Carro</h2>
+            <canvas id="ventasBarChart" width="500" height="350"></canvas>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            cargarClientes();
+            cargarAutos();
+            cargarCompras();
+        });
+
+        function cargarClientes() {
+            fetch('/api/clientes')
+                .then(response => response.json())
+                .then(data => {
+                    const tablaClientes = document.getElementById("tabla-clientes-body");
+                    tablaClientes.innerHTML = "";
+                    data.forEach(cliente => {
+                        const fila = `<tr data-id="${cliente.id}">
+                            <td>${cliente.id}</td>
+                            <td contenteditable="true" data-field="nombre">${cliente.nombre}</td>
+                            <td contenteditable="true" data-field="apellido_paterno">${cliente.apellido_paterno}</td>
+                            <td contenteditable="true" data-field="apellido_materno">${cliente.apellido_materno}</td>
+                            <td contenteditable="true" data-field="email">${cliente.email}</td>
+                            <td contenteditable="true" data-field="telefono">${cliente.telefono}</td>
+                            <td contenteditable="true" data-field="estado">${cliente.estado}</td>
+                            <td contenteditable="true" data-field="ciudad">${cliente.ciudad}</td>
+                            <td>
+                                <button onclick="eliminarCliente(${cliente.id}, this)">Eliminar</button>
+                            </td>
+                        </tr>`;
+                        tablaClientes.innerHTML += fila;
+                    });
+
+                    // Detectar cambios en los campos editables y actualizar automáticamente
+                    document.querySelectorAll("#tabla-clientes-body td[contenteditable=true]").forEach(celda => {
+                        celda.addEventListener("input", function() {
+                            const fila = this.parentNode;
+                            actualizarCliente(fila);
+                        });
+                    });
+                })
+                .catch(error => console.error("Error cargando clientes:", error));
+        }
+
+        function editarCliente(id, btn) {
+            const fila = btn.parentNode.parentNode;
+            let datos = {};
+
+            fila.querySelectorAll("[contenteditable=true]").forEach(celda => {
+                const campo = celda.getAttribute("data-field");
+                datos[campo] = celda.textContent.trim();
+            });
+
+            fetch(`/api/editar/clientes/${id}`, {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(datos)
+            })
+            .then(response => response.json())
+            .then(data => alert(data.message))
+            .catch(error => console.error("Error al actualizar:", error));
+        }
+
+        function eliminarCliente(id, btn) {
+            if (!confirm("¿Eliminar este cliente y sus compras asociadas?")) return;
+
+            fetch(`/api/eliminar/clientes/${id}`, { method: "DELETE" })
+                .then(response => response.json())
+                .then(data => { 
+                    alert(data.message); 
+                    btn.parentNode.parentNode.remove();
+                    cargarCompras(); // 🟢 Recargar compras después de eliminar cliente
+                })
+                .catch(error => console.error("Error al eliminar:", error));
+        }
+        
+        function cargarAutos() {
+            fetch('/api/autos')
+                .then(response => response.json())
+                .then(data => {
+                    const tablaAutos = document.getElementById("tabla-autos-body");
+                    tablaAutos.innerHTML = "";
+                    data.forEach(auto => {
+                        const fila = `<tr>
+                            <td>${auto.id}</td>
+                            <td>${auto.marca}</td>
+                            <td>${auto.modelo}</td>
+                            <td>${auto.anio}</td>
+                            <td>${auto.color}</td>
+                            <td>$${auto.precio.toLocaleString()}</td>
+                            <td>${auto.disponibilidad ? "Disponible" : "No disponible"}</td>
+                        </tr>`;
+                        tablaAutos.innerHTML += fila;
+                    });
+                })
+                .catch(error => console.error("Error cargando autos:", error));
+        }
+
+        function cargarCompras() {
+            fetch('/api/compras')
+                .then(response => response.json())
+                .then(data => {
+                    const tablaCompras = document.getElementById("tabla-compras-body");
+                    tablaCompras.innerHTML = "";
+
+                    let ventasPorModelo = {};
+                    let gananciasPorModelo = {};
+
+                    data.forEach(compra => {
+                        const fila = `<tr>
+                            <td>${compra.fecha_venta}</td>
+                            <td>${compra.nombre}</td>
+                            <td>${compra.email}</td>
+                            <td>${compra.telefono}</td>
+                            <td>${compra.auto_comprado}</td>
+                            <td>$${compra.precio_final.toLocaleString()}</td>
+                            <td>$${compra.enganche.toLocaleString()}</td>
+                            <td>${compra.plazo} meses</td>
+                            <td>$${compra.pago_mensual.toLocaleString()}</td>
+                        </tr>`;
+                        tablaCompras.innerHTML += fila;
+
+                        ventasPorModelo[compra.auto_comprado] = (ventasPorModelo[compra.auto_comprado] || 0) + 1;
+                        gananciasPorModelo[compra.auto_comprado] = (gananciasPorModelo[compra.auto_comprado] || 0) + compra.precio_final;
+                    });
+
+                    renderizarGraficas(ventasPorModelo, gananciasPorModelo);
+                })
+                .catch(error => console.error("Error cargando compras:", error));
+        }
+
+        function renderizarGraficas(ventas, ganancias) {
+            if (Object.keys(ventas).length === 0 || Object.keys(ganancias).length === 0) {
+                console.warn("⚠ No hay datos suficientes para generar las gráficas.");
+                return;
+            }
+
+            new Chart(document.getElementById("ventasPieChart").getContext("2d"), {
+                type: "pie",
+                data: {
+                    labels: Object.keys(ventas),
+                    datasets: [{ data: Object.values(ventas), backgroundColor: ["#D32F2F", "#757575", "#616161"] }]
+                },
+                options: { responsive: true }
+            });
+
+            new Chart(document.getElementById("ventasBarChart").getContext("2d"), {
+                type: "bar",
+                data: {
+                    labels: Object.keys(ganancias),
+                    datasets: [{ label: "Ganancias ($)", data: Object.values(ganancias), backgroundColor: "#D32F2F" }]
+                },
+                options: { responsive: true, scales: { y: { beginAtZero: true } } }
+            });
+        }
+
+        
+    </script>
+</body>
+</html>
