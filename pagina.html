@@ -7,26 +7,31 @@
     <link rel="stylesheet" href="estilo.css">
 </head>
 <body>
-    <h1>Gestión de Productos</h1>
-    <form action="/login" method="POST">
-        <label for="correo">Correo:</label>
-        <input type="email" name="correo" required><br><br>
-        <label for="clave">Clave:</label>
-        <input type="password" name="clave" required><br><br>
-        <button type="submit">Iniciar Sesión</button>
-    </form>
+    <div class="container">
+        <h1>🔍 Gestión de Productos</h1>
+        <form action="/login" method="POST" class="formulario">
+            <label for="correo">📧 Correo:</label>
+            <input type="email" name="correo" required placeholder="Ingrese su correo">
+            <label for="clave">🔑 Clave:</label>
+            <input type="password" name="clave" required placeholder="Ingrese su contraseña">
+            <button type="submit">Iniciar Sesión</button>
+        </form>
 
-    <h2>Agregar Producto</h2>
-    <form action="/productos" method="POST">
-        <label for="nombre">Nombre:</label>
-        <input type="text" name="nombre" required><br><br>
-        <label for="descripcion">Descripción:</label>
-        <input type="text" name="descripcion" required><br><br>
-        <label for="precio">Precio:</label>
-        <input type="number" name="precio" required><br><br>
-        <label for="cantidad">Cantidad:</label>
-        <input type="number" name="cantidad" required><br><br>
-        <button type="submit">Agregar Producto</button>
-    </form>
+        <h2>🛒 Agregar Producto</h2>
+        <form action="/productos" method="POST" class="formulario">
+            <label for="nombre">🏷️ Nombre:</label>
+            <input type="text" name="nombre" required placeholder="Nombre del producto">
+            <label for="descripcion">📝 Descripción:</label>
+            <input type="text" name="descripcion" required placeholder="Descripción del producto">
+            <label for="precio">💲 Precio:</label>
+            <input type="number" name="precio" required placeholder="Precio en USD">
+            <label for="cantidad">📦 Cantidad:</label>
+            <input type="number" name="cantidad" required placeholder="Cantidad en stock">
+            <button type="submit">Agregar Producto</button>
+        </form>
+        <footer class="footer">
+            <p>© 2025 Gestión de Productos - Tecmilenio</p>
+        </footer>
+    </div>
 </body>
 </html>
