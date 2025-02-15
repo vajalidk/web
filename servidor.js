@@ -13,6 +13,9 @@ app.use(session({
     saveUninitialized: true
 }));
 
+// Instalar dependencias necesarias
+// Ejecuta en la terminal: npm install express mongoose express-session joi dotenv
+
 // Conectar a MongoDB
 mongoose.connect(process.env.MONGO_URI)
     .then(() => console.log('✅ Conectado a MongoDB'))
@@ -77,6 +80,32 @@ app.get('/productos', async (req, res) => {
     }
     const productos = await Producto.find().limit(20);
     res.json(productos);
+});
+
+// NUEVAS RUTAS AGREGADAS (PUT y DELETE)
+app.put('/productos/:id', async (req, res) => {
+    if (!req.session.usuario) {
+        return res.status(403).json({ mensaje: '⚠️ No autorizado' });
+    }
+    const { error } = schemaProducto.validate(req.body);
+    if (error) return res.status(400).json({ mensaje: error.details[0].message });
+
+    const producto = await Producto.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    if (!producto) {
+        return res.status(404).json({ mensaje: '❌ Producto no encontrado' });
+    }
+    res.json({ mensaje: '✅ Producto actualizado', producto });
+});
+
+app.delete('/productos/:id', async (req, res) => {
+    if (!req.session.usuario) {
+        return res.status(403).json({ mensaje: '⚠️ No autorizado' });
+    }
+    const producto = await Producto.findByIdAndDelete(req.params.id);
+    if (!producto) {
+        return res.status(404).json({ mensaje: '❌ Producto no encontrado' });
+    }
+    res.json({ mensaje: '✅ Producto eliminado' });
 });
 
 // Servir página HTML
